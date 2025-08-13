@@ -16,28 +16,28 @@ function setup() {
   }
 }
 
-function mouseClicked(){
-  let col = floor(mouseX / cellWidth);
-  let row = floor(mouseY / cellHeight);//work out which cell im mousing over
-  grid[row][col] = 1//set that cell to alive
-  fill(0);//colour it in
-  rect(row * cellHeight, col * cellWidth, cellWidth, cellHeight);
-  //rect(row * cellWidth, coll * cellHeight, cellWidth, cellHeight);//ts not working
-}
 
 function draw() {
   background(255);
   let nextGrid = [];
+  if (mouseIsPressed){     
+    let col = floor(mouseX / cellWidth);
+    let row = floor(mouseY / cellHeight);// work out which cell im mousing over
+    grid[col][row] = 1;// set that cell to alive
 
+    fill(0);// colour it in
+    rect(col * cellWidth, row * cellHeight , cellWidth, cellHeight);
+  }
+  
   for (let i = 0; i < cols; i++) {
     nextGrid[i] = [];
     for (let j = 0; j < rows; j++) {
       let neighbours = 0;
 
-      //check each adjacent cell
+      // check each adjacent cell
       for (let xOff = -1; xOff <= 1; xOff++) {
         for (let yOff = -1; yOff <= 1; yOff++) {
-          if (xOff === 0 && yOff === 0) continue; //not including the current cell
+          if (xOff === 0 && yOff === 0) continue; // not including the current cell
           let x = i + xOff;
           let y = j + yOff;
           if (x >= 0 && x < cols && y >= 0 && y < rows) {
@@ -46,22 +46,22 @@ function draw() {
         }
       }
 
-      //CGOL logic
+      // CGOL logic
       if (grid[i][j] === 1) {
         if (neighbours < 2 || neighbours > 3) {
-          nextGrid[i][j] = 0; //dies lol
+          nextGrid[i][j] = 0; // dies lol
         } else {
-          nextGrid[i][j] = 1; //stays alive
+          nextGrid[i][j] = 1; // stays alive
         }
       } else {
         if (neighbours === 3) {
-          nextGrid[i][j] = 1; //brought to life
+          nextGrid[i][j] = 1; // brought to life
         } else {
           nextGrid[i][j] = 0;
         }
       }
 
-      //draw
+      // draw
       if (grid[i][j] === 1) {
         fill(0);
       } else {
